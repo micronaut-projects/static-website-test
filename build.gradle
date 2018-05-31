@@ -1,0 +1,39 @@
+
+plugins {
+    id 'groovy'
+    id "com.energizedwork.webdriver-binaries" version "1.4"
+}
+
+group 'io.micronaut'
+version '1.0-SNAPSHOT'
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.4.15'
+    testCompile "org.spockframework:spock-core:1.1-groovy-2.4"
+    testCompile "org.gebish:geb-spock:2.1"
+    testRuntime "org.seleniumhq.selenium:selenium-firefox-driver:3.6.0"
+    testRuntime "org.seleniumhq.selenium:selenium-chrome-driver:3.6.0"
+    testCompile "org.seleniumhq.selenium:selenium-api:3.6.0"
+    testCompile "org.seleniumhq.selenium:selenium-support:3.6.0"
+}
+
+webdriverBinaries {
+    chromedriver '2.38'
+    geckodriver '0.20.1'
+}
+
+tasks.withType(Test) {
+    systemProperty "geb.env", System.getProperty('geb.env')
+    systemProperty "geb.build.reportsDir", reporting.file("reportes")
+
+    beforeTest { descriptor -> logger.quiet " -- $descriptor" }
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat 'full'
+    }
+}
