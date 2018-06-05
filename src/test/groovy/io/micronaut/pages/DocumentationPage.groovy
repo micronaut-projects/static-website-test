@@ -1,6 +1,7 @@
-package io.micronaut
+package io.micronaut.pages
 
 import geb.Page
+import io.micronaut.modules.NavigationModule
 
 class DocumentationPage extends Page {
 
@@ -9,6 +10,7 @@ class DocumentationPage extends Page {
     static at = { !$('body.docs').empty }
 
     static content = {
+        nav { $('#navbar').module(NavigationModule) }
         links { $('.guidegroup a') }
     }
 

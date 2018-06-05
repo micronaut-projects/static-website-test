@@ -1,6 +1,9 @@
-package io.micronaut
+package io.micronaut.spec
 
 import geb.spock.GebSpec
+import io.micronaut.GoogleAnalytics
+import io.micronaut.pages.DocumentationPage
+import io.micronaut.pages.HomePage
 
 class DocumentationSpec extends GebSpec implements GoogleAnalytics {
 
@@ -18,7 +21,7 @@ class DocumentationSpec extends GebSpec implements GoogleAnalytics {
     def "Docs page has snapshot/guide"() {
 
         when:
-        browser.to DocumentationPage
+        to DocumentationPage
 
         then:
         at DocumentationPage
@@ -30,7 +33,7 @@ class DocumentationSpec extends GebSpec implements GoogleAnalytics {
     def "Docs page has latest/api"() {
 
         when:
-        browser.to DocumentationPage
+        to DocumentationPage
 
         then:
         at DocumentationPage
@@ -42,7 +45,7 @@ class DocumentationSpec extends GebSpec implements GoogleAnalytics {
     def "Docs page has latest/guide"() {
 
         when:
-        browser.to DocumentationPage
+        to DocumentationPage
 
         then:
         at DocumentationPage
@@ -56,6 +59,6 @@ class DocumentationSpec extends GebSpec implements GoogleAnalytics {
         to HomePage
 
         then:
-        browser.driver.pageSource.contains(googleAnalyticsCode)
+        driver.pageSource.contains(googleAnalyticsCode)
     }
 }

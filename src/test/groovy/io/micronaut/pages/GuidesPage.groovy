@@ -1,7 +1,8 @@
-package io.micronaut
+package io.micronaut.pages
 
 import geb.Page
 import geb.module.TextInput
+import io.micronaut.modules.NavigationModule
 
 class GuidesPage extends Page {
 
@@ -10,11 +11,13 @@ class GuidesPage extends Page {
     static at = { !$('body.guides').empty }
 
     static content = {
+        nav { $('#navbar').module(NavigationModule) }
+
         blackLogo(required: false) {
             $('#blackLogo')
         }
         guideLinks {
-            $('.guidegroup', style: notContains('display: none;')).$('li')
+            $('.guidegroup', style: notContains('display: none;')).$('li').$('a')
         }
         searchInput {
             $('#query').module(TextInput)
@@ -22,12 +25,18 @@ class GuidesPage extends Page {
         searchResults { $('#searchresults')}
     }
 
+    List<String> guideLinksHref() {
+        guideLinks.collect { it.getAttribute('href')}
+    }
+
     String searchResultsText() {
         searchResults.text()
     }
 
     void search(String value) {
-        searchInput.text = value
+        for ( char c : value.toCharArray() ) {
+            searchInput << c.toString()
+        }
     }
 
     boolean hasBlackLogo() {

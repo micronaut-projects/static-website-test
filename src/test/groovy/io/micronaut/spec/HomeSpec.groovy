@@ -1,7 +1,8 @@
-package io.micronaut
+package io.micronaut.spec
 
-import geb.Browser
 import geb.spock.GebSpec
+import io.micronaut.GoogleAnalytics
+import io.micronaut.pages.HomePage
 
 class HomeSpec extends GebSpec implements GoogleAnalytics {
 
