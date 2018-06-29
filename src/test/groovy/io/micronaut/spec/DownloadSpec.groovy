@@ -21,7 +21,7 @@ class DownloadSpec extends GebSpec implements GoogleAnalytics, Github {
 
     def "download version"() {
         given:
-        String v = '1.0.0.M1'
+        String v = '1.0.0.M2'
 
         when:
         browser.to DownloadPage
