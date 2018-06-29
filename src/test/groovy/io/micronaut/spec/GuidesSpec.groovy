@@ -43,4 +43,29 @@ class GuidesSpec extends GebReportingSpec implements GoogleAnalytics {
                 assert contains
             }
     }
+
+    def "check every java/kotlin guide contains annotation processing section"() {
+        when:
+        to(GuidesPage)
+
+        then:
+        at(GuidesPage)
+
+        and:
+        for ( String href  : browser.page.guideLinksHref()) {
+            if ( href.contains('groovy') ) {
+                continue
+            }
+            browser.go href
+            String html = driver.pageSource
+            if (html.contains("Transcript</h2>")) {
+                continue
+            }
+            boolean contains = html.contains('img/annotationprocessorsintellij.png')
+            if(!contains) {
+                log.error '{} does not contain annotation processing section', href
+            }
+            assert contains
+        }
+    }
 }
