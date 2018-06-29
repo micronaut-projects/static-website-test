@@ -68,4 +68,26 @@ class GuidesSpec extends GebReportingSpec implements GoogleAnalytics {
             assert contains
         }
     }
+
+    def "check every kotlin guide contains kapt/intellij section"() {
+        when:
+        to(GuidesPage)
+
+        then:
+        at(GuidesPage)
+
+        and:
+        for ( String href  : browser.page.guideLinksHref()) {
+            if ( !href.endsWith('kt') ) {
+                continue
+            }
+            browser.go href
+            String html = driver.pageSource
+            boolean contains = html.contains('Kotlin, Kapt and IntelliJ')
+            if(!contains) {
+                log.error '{} does not contain annotation kapt/intellij section', href
+            }
+            assert contains
+        }
+    }
 }
