@@ -3,10 +3,11 @@ package io.micronaut.spec
 import geb.spock.GebReportingSpec
 import groovy.util.logging.Slf4j
 import io.micronaut.GoogleAnalytics
+import io.micronaut.GradlePropertiesReader
 import io.micronaut.pages.GuidesPage
 
 @Slf4j
-class GuidesSpec extends GebReportingSpec implements GoogleAnalytics {
+class GuidesSpec extends GebReportingSpec implements GoogleAnalytics, GradlePropertiesReader {
 
     def "search filters guides"() {
         when:
@@ -25,6 +26,25 @@ class GuidesSpec extends GebReportingSpec implements GoogleAnalytics {
         and:
         searchResultsText().contains("GUIDES FILTERED BY: ${query.toUpperCase()}")
     }
+
+    def "check every guide uses the latest micronaut version"() {
+        when:
+        to(GuidesPage)
+
+        then:
+        at(GuidesPage)
+
+        and:
+        for ( String href  : browser.page.guideLinksHref()) {
+            browser.go href
+            boolean contains = driver.pageSource.contains(micronautVersion())
+            if(!contains) {
+                log.error '{} does not contain {}', href, micronautVersion()
+            }
+            assert contains
+        }
+    }
+
 
     def "check every guide contains google analytic snippet"() {
         when:

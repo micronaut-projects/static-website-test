@@ -3,10 +3,11 @@ package io.micronaut.spec
 import geb.spock.GebSpec
 import io.micronaut.Github
 import io.micronaut.GoogleAnalytics
+import io.micronaut.GradlePropertiesReader
 import io.micronaut.pages.DownloadPage
 import io.micronaut.pages.HomePage
 
-class DownloadSpec extends GebSpec implements GoogleAnalytics, Github {
+class DownloadSpec extends GebSpec implements GradlePropertiesReader, GoogleAnalytics, Github {
 
     def "download page has google analytics code"() {
         when:
@@ -20,9 +21,6 @@ class DownloadSpec extends GebSpec implements GoogleAnalytics, Github {
     }
 
     def "download version"() {
-        given:
-        String v = '1.0.0.M2'
-
         when:
         browser.to DownloadPage
 
@@ -30,14 +28,12 @@ class DownloadSpec extends GebSpec implements GoogleAnalytics, Github {
         at DownloadPage
 
         and:
-        latestVersion() == v
+        latestVersion() == micronautVersion()
 
         and:
-        downloadLinksHref().contains githubBinary(v)
+        downloadLinksHref().contains githubBinary(micronautVersion())
 
         and:
-        downloadLinksHref().contains githubRelease(v)
-
-
+        downloadLinksHref().contains githubRelease(micronautVersion())
     }
 }
